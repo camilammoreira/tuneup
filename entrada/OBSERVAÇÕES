@@ -1,0 +1,25 @@
+OBSERVAÇÕES
+
+- Na tabela saida_produto
+  - Inserir data!
+
+- Para inserir a dada basta usar o type='date' e inserir como string no banco.
+  - Para mostrar use o date('d/m/Y', strtotime($data_vinda_do_banco))
+
+- Para controle de usuaário basta colocar o campo nas tabelas e usar o $_SESSION['usuId'] 
+
+- Relatórios
+  - ENTRADA (ex.)
+    SELECT proNome, COUNT(*)
+    FROM entrada, entrada_produto, produto
+    WHERE entrada.entCod = entrada_produto.entCod 
+          AND produto.proCod = entrada_produto.proCod 
+          AND entData >= '$data_inicio' 
+          AND entData <= '$data_final'
+    GROUP BY produto.proCod
+
+- PROBLEMA NO BD
+  - Duas notas não podem tem o mesmo número.
+  - O ideal é que o número de nota ser a chave. 
+
+
