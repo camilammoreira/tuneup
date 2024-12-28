@@ -47,14 +47,18 @@ controle-estoque/ ├── cod/ # Código principal do projeto │ ├── cs
 - Acesse o projeto no navegador: http://localhost/tuneup/
 
 
-### 📜 Histórico do Projeto
+## 📜 Histórico do Projeto
 Este sistema foi desenvolvido em 2018 como parte do Projeto Integrador do curso técnico em informática, com o objetivo de otimizar o gerenciamento de materiais de TI da escola. O projeto envolveu o uso de tecnologias web modernas para criar uma solução prática e funcional.
 
-### 📝 Licença
+## 📝 Licença
 Este projeto é de uso livre para fins educacionais e experimentais.
 
-### 📌 Observações
+## 📌 Observações
 Certifique-se de ajustar os caminhos no header.php e footer.php para o correto funcionamento dos recursos estáticos (CSS, JS, imagens).
 Contribuições são bem-vindas! Abra um PR ou envie sugestões na aba Issues.
+
+## Pôster apresentado como Projeto Integrador
+
+![Poster](https://github.com/camilammoreira/tuneup/blob/main/img/Poster-PI-2018-min.png)
 
 Desenvolvido com 💻 e ☕ por <a href="https://github.com/camilammoreira">Camila Moreira</a> e Levy Amorim.
