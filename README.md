@@ -34,14 +34,14 @@ controle-estoque/ ├── cod/ # Código principal do projeto │ ├── cs
    git clone https://github.com/camilammoreira/tuneup.git
 2. Coloque a pasta do projeto na pasta htdocs (para XAMPP) ou equivalente.
 3. Configure o banco de dados:
-- Crie um banco de dados no phpMyAdmin chamado controle_estoque (ou outro nome).
+- Crie um banco de dados no phpMyAdmin chamado tuneup (ou outro nome).
 - Importe o arquivo .sql fornecido no repositório para criar as tabelas.
-- Atualize as credenciais do banco de dados no arquivo conexao.php:
+- Atualize as credenciais do banco de dados no arquivo cod/bdconfig.php:
     ```bash
-    $host = 'localhost';
-    $user = 'root';
-    $pass = '';
-    $db   = 'controle_estoque';
+    $bd_host = 'localhost';
+    $bd_banco   = 'tuneup';
+    $bd_usu = 'root';
+    $bd_senha = '';
 4. Executando o Projeto
 - Inicie o Apache e o MySQL no XAMPP/WAMP.
 - Acesse o projeto no navegador: http://localhost/tuneup/
