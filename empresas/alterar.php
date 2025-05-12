@@ -1,7 +1,8 @@
-<?php
+	<?php include_once('../cod/seg.php'); ?>
+	<?php
 	// Conectar com o banco
 	require_once('../cod/bdconexao.php'); // gera o obj de conexão $con
-
+	
 	if (isset($_POST['submit'])){
 		// Recebe as variáveis do formulário
 		$nome = $_POST['nome'];
@@ -30,7 +31,7 @@
 		";
 
 		if ($con->query($sql) === TRUE)
-			header("Location: pesquisar.php");
+			header("Location: ./pesquisar.php");
 		else{
 			$erro = 1;
 			array_push($msg,"Operação não realizada!");
@@ -40,8 +41,7 @@
 	}
 
 	?>
-	<?php include('../cod/header.php');?>
-	<?php 
+	<?php include('../cod/header.php');
 	if (isset($msg)){
 		foreach($msg as $item){ 
 			if ($erro==1){
@@ -124,7 +124,7 @@
 
 				<label for="tel">Telefone </label>
 
-				<input type="text" name="telefone" class="form-control" onkeypress="mascara(this, '## ####-####')" maxlength="12" value="<?php echo $info->forFone; ?>"/>
+				<input type="tel" name="telefone" class="form-control" onkeypress="mascara(this, '## #####-####')" maxlength="12" value="<?php echo $info->forFone; ?>"/>
 
 			</div>
 
