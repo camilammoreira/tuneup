@@ -82,7 +82,7 @@
 				<input type="text" name="nome" class="form-control" id="nome" maxlength="100" required>
 			</div>
 			<div class="form-group col-md-3">
-				<label for="inputCNPJ">CNPJ/CPF</label>
+				<label for="cnpj">CNPJ/CPF</label>
 				<input type="text" name="cnpj" class="form-control" id="cnpj" maxlength="18" oninput="formatarDocumento(this)" required>
 			</div>
 		</div>
