@@ -6,16 +6,9 @@
 	if (isset($_POST['submit'])){
 		// Recebe as variáveis do formulário
 		$nome = $_POST['nome'];
-		$cnpj = $_POST['cnpj'];
-		$representante = $_POST['representante'];
+		$responsavel = $_POST['responsavel'];
 		$telefone = $_POST['telefone'];
 		$email = $_POST['email'];
-		$rua = $_POST['rua'];
-		$numero = $_POST['numero'];
-		$bairro = $_POST['bairro'];
-		$cep = $_POST['cep'];
-		$cidade = $_POST['cidade'];
-		$estado = $_POST['estado'];
 		$usuId = $_SESSION['usuId'];
 		// Verificação de erro
 		$erro = 0;
@@ -25,9 +18,9 @@
 
 		// Inserir no banco
 		$sql = "
-		UPDATE fornecedor 
-		SET forNome='$nome', forCNPJ='$cnpj', forRepresentante= '$representante', forFone='$telefone', forEmail='$email', forRua='$rua', forNumero='$numero', forBairro='$bairro', forCep='$cep', forCidade='$cidade', forEstado='$estado', usuId='$usuId'
-		WHERE forCod = $id
+		UPDATE setor 
+		SET setNome='$nome', setResponsavel= '$responsavel', setFone='$telefone', setEmail='$email', usuId='$usuId'
+		WHERE setCod = $id
 		";
 
 		if ($con->query($sql) === TRUE)
@@ -36,7 +29,7 @@
 			$erro = 1;
 			array_push($msg,"Operação não realizada!");
 		}
-		
+
 		echo $con->error;
 	}
 
@@ -69,185 +62,41 @@
 	<?php
 
 	$id = $_GET['id'];
-
-		  //Criar a query
-
-	$sql = "SELECT * FROM fornecedor WHERE forCod = $id";
-
-		  // Executar a query
-
+	//Criar a query
+	$sql = "SELECT * FROM setor WHERE setCod = $id";
+	// Executar a query
 	$result = $con->query($sql);
-
-		  // Tratei a consulta e joguei pra dentro do obj info
-
+	// Tratei a consulta e joguei pra dentro do obj info
 	$info = mysqli_fetch_object($result);
-
 	?>
 
 	<form action="alterar.php" method="post">
-
-		<h4>Alterar Empresa</h4></br>
-
-		<input type="hidden" value="<?php echo $id;?>" name="id"/>
-
-		<div class="form-row">
-
-			<div class="form-group col-md-9">
-
-				<label for="nome">Nome</label>
-
-				<input type="text" name="nome" class="form-control" value="<?php echo $info->forNome; ?>" required="required"/>
-
+		<h4>Alterar Setor</h4></br>
+		<div class="form-group">
+			<input type="hidden" value="<?php echo $id;?>" name="id"/>
+			<div class="form-row">
+				<input type="hidden" value="<?php echo $id;?>" name="id"/>
+				<div class="form-group col-md-12">
+					<label for="nome">Nome</label>
+					<input type="text" name="nome" class="form-control" id="nome" maxlength="100" value="<?php echo $info->setNome; ?>" required>
+				</div>
 			</div>
-
-			<div class="form-group col-md-3">
-
-				<label for="inputCNPJ">CNPJ/CPF</label>
-
-				<input type="text" name="cnpj" class="form-control" value="<?php echo $info->forCNPJ; ?>" required="required"/>
-
+			<label for="end">Contato</label>
+			<div class="form-row">
+				<div class="form-group col-md-3">
+					<label for="tel">Telefone do Setor</label>
+					<input type="text" name="telefone" class="form-control" onkeypress="mascara(this, '## #####-####')" maxlength="13" value="<?php echo $info->setFone; ?>" >
+				</div>
+				<div class="form-group col-md-4">
+					<label for="email">E-mail do Setor</label>
+					<input type="email" name="email" class="form-control" id="email" maxlength="40" value="<?php echo $info->setEmail; ?>" >
+				</div>
+				<div class="form-group col-md-5">
+					<label for="responsavel">Responsável</label>
+					<input type="text" name="responsavel" class="form-control" id="responsavel" maxlength="100" value="<?php echo $info->setResponsavel; ?>" >
+				</div>
 			</div>
-
 		</div>
-
-		<div class="form-row">
-
-			<div class="form-group col-md-6">
-
-				<label for="rep">Representante </label>
-
-				<input type="text" name="representante" class="form-control" value="<?php echo $info->forRepresentante; ?>"/>
-
-			</div>
-
-			<div class="form-group col-md-3">
-
-				<label for="tel">Telefone </label>
-
-				<input type="tel" name="telefone" class="form-control" onkeypress="mascara(this, '## #####-####')" maxlength="12" value="<?php echo $info->forFone; ?>"/>
-
-			</div>
-
-			<div class="form-group col-md-3">
-
-				<label for="email">E-mail </label>
-
-				<input type="email" name="email" class="form-control" value="<?php echo $info->forEmail; ?>"/>
-
-			</div>
-
-		</div>
-
-		<label for="end">Endereço</label>
-
-		<div class="form-row">
-
-			<div class="form-group col-md-7">
-
-				<input type="text" name="rua" class="form-control" value="<?php echo $info->forRua; ?>" placeholder="Rua, Avenida.."/>
-
-			</div>
-
-			<div class="form-group col-md-2">
-
-				<input type="text" name="numero" class="form-control" value="<?php echo $info->forNumero; ?>" placeholder="Número"/>
-
-			</div>
-
-			<div class="form-group col-md-3">
-
-				<input type="text" name="bairro" class="form-control" value="<?php echo $info->forBairro; ?>" placeholder="Bairro"/>
-
-			</div>
-
-		</div>
-
-		<div class="form-row">
-
-			<div class="form-group col-md-6">
-
-				<label for="inputCidade">Cidade</label>
-
-				<input type="text" name="cidade" class="form-control" value="<?php echo $info->forCidade; ?>"/>
-
-			</div>
-
-			<div class="form-group col-md-4">
-
-				<label for="inputState">Estado</label>
-
-				<select name="estado" id="inputState" class="form-control">
-
-					<option selected><?php echo $info->forEstado; ?></option>
-
-					<option> AC</option>
-
-					<option> AL</option>
-
-					<option> AP</option>
-
-					<option> AM</option>
-
-					<option> BA</option>
-
-					<option> CE</option>
-
-					<option> DF</option>
-
-					<option> ES</option>
-
-					<option> GO</option>
-
-					<option> MA</option>
-
-					<option> MT</option>
-
-					<option> MS</option>
-
-					<option> MG</option>
-
-					<option> PA</option>
-
-					<option> PB</option>
-
-					<option> PR</option>
-
-					<option> PR</option>
-
-					<option> PI</option>
-
-					<option> RJ</option>
-
-					<option> RN</option>
-
-					<option> RS</option>
-
-					<option> RO</option>
-
-					<option> RR</option>
-
-					<option> SC</option>
-
-					<option> SP</option>
-
-					<option> SE</option>
-
-					<option> TO</option>
-
-				</select>
-
-			</div>
-
-			<div class="form-group col-md-2">
-
-				<label for="inputZip">CEP</label>
-
-				<input type="text" name="cep" class="form-control" onkeypress="mascara(this, '#####-###')" maxlength="9" value="<?php echo $info->forCep; ?>"/>
-
-			</div>
-
-		</div>
-
 		<button type="submit" class="btn btn-info float-right mt-1" name="submit">Alterar</button>
 
 		<a class="btn btn-light float-right mt-1 mr-2" href="pesquisar.php" role="button">Cancelar</a>
@@ -257,21 +106,13 @@
 	<script language="JavaScript">
 
 		function mascara(t, mask){
-
 			var i = t.value.length;
-
 			var saida = mask.substring(1,0);
-
 			var texto = mask.substring(i)
-
 			if (texto.substring(0,1) != saida){
-
 				t.value += texto.substring(0,1);
-
 			}
-
 		}
-
 	</script>
 
 	<?php include('../cod/footer.php');?>

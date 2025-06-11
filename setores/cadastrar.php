@@ -62,7 +62,7 @@
 			}
 		}
 	?>	
-		<form action="cadastrar.php" method="post">
+	<form action="cadastrar.php" method="post">
 		<h4>Cadastrar Setor</h4></br>
 		<div class="form-group">
 			<div class="form-row">
@@ -73,17 +73,17 @@
 			</div>
 			<label for="end">Contato</label>
 			<div class="form-row">
-				<div class="form-group col-md-6">
-					<label for="responsavel">Responsável</label>
-					<input type="text" name="responsavel" class="form-control" id="responsavel" maxlength="100">
-				</div>
 				<div class="form-group col-md-3">
 					<label for="tel">Telefone do Setor</label>
 					<input type="text" name="telefone" class="form-control" onkeypress="mascara(this, '## #####-####')" maxlength="13">
 				</div>
-				<div class="form-group col-md-3">
+				<div class="form-group col-md-4">
 					<label for="email">E-mail do Setor</label>
 					<input type="email" name="email" class="form-control" id="email" maxlength="40">
+				</div>
+				<div class="form-group col-md-5">
+					<label for="responsavel">Responsável</label>
+					<input type="text" name="responsavel" class="form-control" id="responsavel" maxlength="100">
 				</div>
 			</div>
 		</div>

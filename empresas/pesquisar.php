@@ -46,7 +46,7 @@
 		}
 	}
 	?>
-	<h4>Pesquisar Empresa</h4>		
+	<h4>Pesquisar Fornecedor</h4>		
 	<input class="form-control" id="myInput" type="text" placeholder="Pesquisar...">
 	<br>
 	<table class="table table-hover">
