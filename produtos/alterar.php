@@ -77,11 +77,15 @@ require_once('../cod/seg.php');
 		<input type="hidden" value="<?php echo $id;?>" name="id"/>
 		<div class="form-row">
 			<input type="hidden" value="<?php echo $id;?>" name="id"/>
-			<div class="form-group col-lg-12">
+			<div class="form-group col-lg-7">
 				<label for="nome">Nome</label>
-				<input type="text" name="nome" class="form-control" id="nome" value="<?php echo $info->proNome; ?>" required="required">
+				<input type="text" name="nome" class="form-control" id="nome" value="<?php echo $info->proNome; ?>" required>
 			</div>
-			<div class="form-group col-lg-6">
+			<div class="form-group col-sm-2">
+				<label>Estoque (un)</label>
+				<input type="number" name="qnt" class="form-control" id="qnt" value="<?php echo $info->proQnt?>" disabled>
+			</div>
+			<div class="form-group col-lg-3">
 				<label for="tipo">Tipo</label><br>
 				<div class="btn-group btn-group-toggle" data-toggle="buttons">
 					<?php 
