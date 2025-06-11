@@ -73,7 +73,7 @@
 		}
 	?>	
 		<form action="cadastrar.php" method="post">
-		<h4>Cadastrar Empresa</h4></br>
+		<h4>Cadastrar Fornecedor</h4></br>
 		<div class="form-group">
 		</div>
 		<div class="form-row">

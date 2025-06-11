@@ -18,7 +18,7 @@ if (isset($_POST['op']) && $_POST['op']=='NF'){
 		// Recebe as variáveis do formulário
 	$nf = $_POST['nf'];
 	$data = $_POST['data'];
-	$empresa = $_POST['empresa'];
+	$fornecedor = $_POST['fornecedor'];
 	$usuId = $_SESSION['usuId'];
 
 	$erro=0;
@@ -28,8 +28,8 @@ if (isset($_POST['op']) && $_POST['op']=='NF'){
 	if (!$erro){
 			// Inserir no banco
 		$sql = "
-		INSERT INTO entrada (entNF, entData, entEmpresa, usuId) 
-		VALUES ('$nf','$data','$empresa','$usuId')
+		INSERT INTO entrada (entNF, entData, entFornecedor, usuId) 
+		VALUES ('$nf','$data','$fornecedor','$usuId')
 		";
 
 		if ($con->query($sql) === TRUE){
@@ -182,8 +182,8 @@ if ($op != 'PR') {
 			<input type="date" name="data" class="form-control col-lg-5" id="data" required>          
 		</div>
 		<div class="form-group">
-			<label>Empresa</label></br>
-			<select name="empresa" class="escolha form-control col-lg-5" required>
+			<label>Fornecedor</label></br>
+			<select name="fornecedor" class="escolha form-control col-lg-5" required>
 				<option></option>
 				<?php
 				$sql = "SELECT * FROM fornecedor ORDER BY forNome";

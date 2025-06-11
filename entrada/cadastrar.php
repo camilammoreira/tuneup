@@ -9,7 +9,7 @@
 		// Recebe as variáveis do formulário
 		$nf = $_POST['nf'];
 		$data = $_POST['data'];
-		$empresa = $_POST['empresa'];
+		$fornecedor = $_POST['fornecedor'];
 		
 		$erro=0;
 		$msg = array();
@@ -18,8 +18,8 @@
 		if (!$erro){
 			// Inserir no banco
 			$sql = "
-			INSERT INTO entrada (entNF, entData, entEmpresa) 
-			VALUES ('$nf','$data','$empresa')
+			INSERT INTO entrada (entNF, entData, entFornecedor) 
+			VALUES ('$nf','$data','$fornecedor')
 			";
 			
 			if ($con->query($sql) === TRUE){
@@ -68,8 +68,8 @@
 				<input type="text" name="data" class="form-control" id="data">          
 			</div>
 			<div class="form-group col-lg-4">
-				<label>Empresa</label>
-				<select name="empresa" class="form-control">
+				<label>Fornecedor</label>
+				<select name="fornecedor" class="form-control">
 					<option value="0">Escolha...</option>
 					<?php
 					$sql = "SELECT * FROM fornecedor ORDER BY forNome";
@@ -207,11 +207,11 @@
 
 					</td>
 
-					<td scope="col-xs-3 col-sm-3 col-md-3 col-lg-3"><!--EMPRESA-->
+					<td scope="col-xs-3 col-sm-3 col-md-3 col-lg-3"><!--FORNECEDOR-->
 
 						<div class="input-group input-group-sm">
 
-							<select id="empresa" class="form-control" >
+							<select id="fornecedor" class="form-control" >
 
 								<option>Escolha...</option>
 

@@ -31,11 +31,11 @@
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle ="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Empresas
+                      Fornecedores
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="<?php echo BASE_URL; ?>empresas/cadastrar.php">Cadastrar</a>
-                    <a class="dropdown-item" href="<?php echo BASE_URL; ?>empresas/pesquisar.php">Pesquisar</a>
+                    <a class="dropdown-item" href="<?php echo BASE_URL; ?>fornecedores/cadastrar.php">Cadastrar</a>
+                    <a class="dropdown-item" href="<?php echo BASE_URL; ?>fornecedores/pesquisar.php">Pesquisar</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
