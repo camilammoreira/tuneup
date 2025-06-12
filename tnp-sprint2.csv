@@ -1,0 +1,9 @@
+Issue Type,Summary,Description,Priority,Labels,Story Points,Issue key
+Task,Criar tabelas de entrada e saída de produtos no banco,Criar estrutura MySQL com chaves estrangeiras para movimentações de estoque,High,"db,setup",1,TNP-101
+Story,Criar formulário e lógica de registro de entrada de produto,Implementar formulário e lógica PHP para registrar entrada de produtos no estoque,High,"feature,entrada",2,TNP-102
+Story,Criar formulário e lógica de registro de saída de produto,Implementar formulário e lógica para saída de produto, validando quantidade disponível,High,"feature,saida",3,TNP-103
+Task,Criar listagem de entradas de produto,Criar tabela HTML que exibe entradas, datas, produtos e quantidades,Medium,"feature,listagem",1,TNP-104
+Task,Criar listagem de saídas de produto,Criar listagem das saídas com visualização limpa e segura,Medium,"feature,listagem",1,TNP-105
+Task,Testar fluxo completo da movimentação,Testar entrada → saída → saldo. Verificar comportamento e corrigir falhas,High,"test,QA",2,TNP-106
+Task,Refatorar código e aplicar validações e segurança,Aplicar validações HTML, PHP, proteção contra SQL injection, campos obrigatórios,Medium,"refactor,seguranca",2,TNP-107
+Story,Criar relatório simples de movimentações por produto (opcional),Mostrar totais de entradas e saídas por produto (dashboard simples),Low,"feature,relatorio",1,TNP-108
