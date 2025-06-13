@@ -10,10 +10,22 @@ if (isset($_GET['op']) && isset($_GET['id'])) {
 		$sql = "DELETE FROM produto WHERE proCod = $id";
 		// Executar a query
 		if ($con->query($sql) === TRUE)
-			array_push($msg, "Operação realizada com sucesso!");
+			array_push($msg, "Produto excluído");
 		else {
 			$erro = 1;
 			array_push($msg, "Operação não realizada!");
+		}
+	}
+	if ($_GET['op'] == 'arquivar') {
+		$erro = 0;
+		$msg = array();
+		$id = $_GET['id'];
+		$sql = "UPDATE produto SET ativo = 0 WHERE proCod = $id";
+		if ($con->query($sql) === TRUE)
+			array_push($msg, "Produto arquivado");
+		else {
+			$erro = 1;
+			array_push($msg, "Operação não realizada");
 		}
 	}
 }
@@ -51,8 +63,9 @@ if (isset($msg)) {
 	<table class="table table-hover">
 		<thead>
 			<tr>
-				<th>Código</th>
+				<th>Cód.</th>
 				<th>Nome</th>
+				<th>Estoque</th>
 				<th>Tipo</th>
 				<th>Última alteração</th>
 				<th>Ação</th>
@@ -62,18 +75,34 @@ if (isset($msg)) {
 			<?php
 			// Criar a query
 			$sql = "SELECT * FROM produto, usuario
-				WHERE produto.usuId = usuario.usuId";
+				WHERE produto.usuId = usuario.usuId AND produto.ativo = 1";
 			// Executar a query
 			$result = $con->query($sql);
 			if (mysqli_num_rows($result) < 1) {
-				echo "Resultados não encontrados!";
+				echo "Nenhum resultado encontrado";
 			} else {
 				// Tratar o resultado
 				while ($row = mysqli_fetch_object($result)) {
+					$id_produto = $row->proCod;
+
+					// Verificar se o produto está em entradas ou saídas
+					$tem_relacao = false;
+
+					$verifica_entrada = mysqli_query($con, "SELECT ent_proCod FROM entrada_produto WHERE proCod = $id_produto LIMIT 1");
+					if (mysqli_num_rows($verifica_entrada) > 0) {
+						$tem_relacao = true;
+					}
+
+					$verifica_saida = mysqli_query($con, "SELECT sai_proCod FROM saida_produto WHERE proCod = $id_produto LIMIT 1");
+					if (mysqli_num_rows($verifica_saida) > 0) {
+						$tem_relacao = true;
+					}
+
 					echo "
 						<tr>
 						<td>$row->proCod</td>
 						<td>$row->proNome</td>	
+						<td>$row->proQnt</td>	
 						<td>$row->proTipo</td>
 						<td>$row->usuNome</td>
 						<td>

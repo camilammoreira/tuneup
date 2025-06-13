@@ -1,3 +1,4 @@
+<<<<<<< HEAD:empresas/alterar.php
 <?php
 // Conectar com o banco
 require_once('../cod/bdconexao.php'); // gera o obj de conexão $con
@@ -19,6 +20,30 @@ if (isset($_POST['submit'])) {
 	// Verificação de erro
 	$erro = 0;
 	$msg = array();
+=======
+	<?php include_once('../cod/seg.php'); ?>
+	<?php
+	// Conectar com o banco
+	require_once('../cod/bdconexao.php'); // gera o obj de conexão $con
+	
+	if (isset($_POST['submit'])){
+		// Recebe as variáveis do formulário
+		$nome = $_POST['nome'];
+		$cnpj = $_POST['cnpj'];
+		$representante = $_POST['representante'];
+		$telefone = $_POST['telefone'];
+		$email = $_POST['email'];
+		$rua = $_POST['rua'];
+		$numero = $_POST['numero'];
+		$bairro = $_POST['bairro'];
+		$cep = $_POST['cep'];
+		$cidade = $_POST['cidade'];
+		$estado = $_POST['estado'];
+		$usuId = $_SESSION['usuId'];
+		// Verificação de erro
+		$erro = 0;
+		$msg = array();
+>>>>>>> 58cbeff6e2a7acea56c4a8295ee90dece24a323f:fornecedores/alterar.php
 
 	$id = $_POST['id'];
 
@@ -29,6 +54,7 @@ if (isset($_POST['submit'])) {
 		WHERE forCod = $id
 		";
 
+<<<<<<< HEAD:empresas/alterar.php
 	if ($con->query($sql) === TRUE)
 		header("Location: pesquisar.php");
 	else {
@@ -62,6 +88,41 @@ if (isset($msg)) {
 				</button>
 			</div>
 			<?php
+=======
+		if ($con->query($sql) === TRUE)
+			header("Location: ./pesquisar.php");
+		else{
+			$erro = 1;
+			array_push($msg,"Operação não realizada!");
+		}
+		
+		echo $con->error;
+	}
+
+	?>
+	<?php include('../cod/header.php');
+	if (isset($msg)){
+		foreach($msg as $item){ 
+			if ($erro==1){
+				?>
+				<div class="alert alert-danger alert-dismissible fade show" role="alert">
+					<?php echo $item ?>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>				
+				<?php
+			}else{
+				?>
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+					<?php echo $item ?>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>				
+				<?php
+			}
+>>>>>>> 58cbeff6e2a7acea56c4a8295ee90dece24a323f:fornecedores/alterar.php
 		}
 	}
 }
@@ -104,7 +165,31 @@ $info = mysqli_fetch_object($result);
 
 			<label for="inputCNPJ">CNPJ/CPF</label>
 
+<<<<<<< HEAD:empresas/alterar.php
 			<input type="text" name="cnpj" class="form-control" value="<?php echo $info->forCNPJ; ?>" required="required" />
+=======
+				<label for="rep">Representante </label>
+
+				<input type="text" name="representante" class="form-control" value="<?php echo $info->forRepresentante; ?>"/>
+
+			</div>
+
+			<div class="form-group col-md-3">
+
+				<label for="tel">Telefone </label>
+
+				<input type="tel" name="telefone" class="form-control" onkeypress="mascara(this, '## #####-####')" maxlength="12" value="<?php echo $info->forFone; ?>"/>
+
+			</div>
+
+			<div class="form-group col-md-3">
+
+				<label for="email">E-mail </label>
+
+				<input type="email" name="email" class="form-control" value="<?php echo $info->forEmail; ?>"/>
+
+			</div>
+>>>>>>> 58cbeff6e2a7acea56c4a8295ee90dece24a323f:fornecedores/alterar.php
 
 		</div>
 
