@@ -101,7 +101,7 @@ $info = mysqli_fetch_object($result);
 					<label class="btn btn-light"><input name="tipo" type="radio" id="option1" value="Permanente" autocomplete="off" /> Permanente</label>
 					<label class="btn btn-light active"><input name="tipo" type="radio" id="option2" value="Consumo" autocomplete="off" checked />
 						Consumo</label>
-				<?php
+					<?php
 				}
 				?>
 			</div>

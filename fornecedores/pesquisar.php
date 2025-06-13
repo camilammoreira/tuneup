@@ -44,7 +44,6 @@ if (isset($msg)) {
 			<?php
 		}
 	}
-<<<<<<< HEAD:empresas/pesquisar.php
 }
 ?>
 <h4>Pesquisar Empresa</h4>
@@ -66,28 +65,6 @@ if (isset($msg)) {
 		<?php
 		// Criar a query
 		$sql = "SELECT * FROM fornecedor, usuario
-=======
-	?>
-	<h4>Pesquisar Fornecedor</h4>		
-	<input class="form-control" id="myInput" type="text" placeholder="Pesquisar...">
-	<br>
-	<table class="table table-hover">
-		<thead>
-			<tr>
-				<th>Código</th>
-				<th>Nome</th>
-				<th>CNPJ</th>
-				<th>Cidade</th>
-				<th>UF</th>
-				<th>Última alteração</th>
-				<th>Ação</th>
-			</tr>
-		</thead>
-		<tbody id="myTable">
-			<?php			
-			// Criar a query
-			$sql = "SELECT * FROM fornecedor, usuario
->>>>>>> 58cbeff6e2a7acea56c4a8295ee90dece24a323f:fornecedores/pesquisar.php
 			WHERE fornecedor.usuId = usuario.usuId ";
 		// Executar a query
 		$result = $con->query($sql);
