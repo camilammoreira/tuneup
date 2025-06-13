@@ -1,0 +1,25 @@
+- atualizar bootstrap
+- responsividade
+- mensagens temporárias de sucesso ou erro canto inferior
+- botão voltar no canto superior esquerdo
+melhorar máscara de telefone (campo para ddd?)
+
+
+
+Empresas:
+
+OK- alterar empresa para fornecedor
+- formulários de cadastro e alteração diferentes
+# Cadastrar:
+OK- validar/preformatar: cnpj ou cpf
+OK- limitar caracteres de acordo com db
+  - API com cep para preenchimento automático
+# Pesquisar:
+  - função ordenar por colunas (asc e dec)
+
+
+PRODUTOS:
+- selecionar vários produtos e inativar ou excluir
+
+Usuário e Configurações
+- 
