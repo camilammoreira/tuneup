@@ -59,16 +59,17 @@ if (isset($_POST['op']) && $_POST['op'] == 'form2') {
 		}
 
 	} elseif ($acao === 'alterar') {
-		$produto = mysqli_real_escape_string($con, $_POST['produto']);
-		$quantidade = intval($_POST['quantidade']);
-		$setor = intval($con, $_POST['setor']);
+		$sai_proCod = $_POST['sai_proCod'];
+		$produto = mysqli_real_escape_string($con, $_POST['proCod']);
+		$quantidade = intval($_POST['saiQntProduto']);
+		$setor = intval($_POST['setCod']);
 
 		$sql = "UPDATE saida_produto 
-				SET proCod = '$produto', quantidade = $quantidade, setor = $setor
-				WHERE id = $sai_proCod";
+				SET proCod = '$produto', saiQntProduto = $quantidade, setCod = $setor
+				WHERE sai_proCod = $sai_proCod";
 
 		if (mysqli_query($con, $sql)) {
-			header("Location: cadastrar.php?id=$saiCod");
+			// header("Location: cadastrar.php?id=$saiCod");
 		} else {
 			echo "Erro ao atualizar: " . mysqli_error($con);
 		}
@@ -228,12 +229,12 @@ if ($op === 'form2') {
 						<form action="cadastrar.php" method="POST">
 							<td class="col-sm-2"><!--QUANTIDADE-->
 								<div class="input-group input-group-sm">
-									<input type="number" class="form-control" value="<?php echo $row->saiQntProduto; ?>">
+									<input type="number" name="saiQntProduto" class="form-control" value="<?php echo $row->saiQntProduto; ?>">
 								</div>
 							</td>
 							<td class="col-sm-4"><!--PRODUTO-->
 								<div class="input-group input-group-sm">
-									<select id="produto" class="form-control">
+									<select id="produto" name='proCod' class="form-control">
 										<?php
 										$sql = "SELECT * FROM produto ORDER BY proNome";
 										$result2 = $con->query($sql);
@@ -250,7 +251,7 @@ if ($op === 'form2') {
 							</td>
 							<td class="col-sm-4"><!--SETOR-->
 								<div class="input-group input-group-sm">
-									<select id="setor" class="form-control">
+									<select id="setor" name="setCod" class="form-control">
 										<?php
 										$sql = "SELECT * FROM setor ORDER BY setNome";
 										$result2 = $con->query($sql);
