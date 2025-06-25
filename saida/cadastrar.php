@@ -49,11 +49,11 @@ if (isset($_POST['op']) && $_POST['op'] == 'form2') {
 	$idSaida = $_POST['saiCod'];
 
 	if ($acao === 'excluir') {
-		$sait_proCod = $_POST['sai_proCod'];
+		$sai_proCod = $_POST['sai_proCod'];
 		$saiCod = intval($_POST['saiCod']);
 		$sql = "DELETE FROM saida_produto WHERE sai_proCod = $sai_proCod";
 		if (mysqli_query($con, $sql)) {
-			array_push($msg, "Produto excluído");
+			// array_push($msg, "Produto excluído");
 		} else {
 			echo "Erro ao excluir: " . mysqli_error($con);
 		}
@@ -203,100 +203,85 @@ if ($op === 'form2') {
 			</div>
 		</form>
 	</div>
+	<!--MOSTRA A PRÉVIA-->
 	<div>
-		<p><i>Prévia do Registro nº 00000 (nome):</i></p>
+		<p><i>Prévia do Registro nº <?php echo $saiCod; ?>:</i></p>
 		<table class="table">
 			<thead>
 				<tr>
 					<th>Qnt.</th>
 					<th>Produto</th>
 					<th>Setor</th>
-					<th>V. Total</th>
 					<th>Ação</th>
 				</tr>
 			</thead>
 			<tbody id="registroSaida">
-				<tr>
-					<td><!--QUANTIDADE-->
-						<div class="input-group input-group-sm">
-							<input type="text" class="form-control" value="15" disabled>
-						</div>
-					</td>
-					<td><!--PRODUTO-->
-						<div class="input-group input-group-sm">
-							<select id="produto" class="form-control" disabled>
-								<option>Escolha...</option>
-								<option selected>Mouse Tal Tal Tal</option>
-								<option>Teclado</option>
-								<option>Monitor</option>
-							</select>
-						</div>
-					</td>
-					<td><!--SETOR-->
-						<div class="input-group input-group-sm">
-							<select id="setor" class="form-control" disabled>
-								<option>Escolha...</option>
-								<option selected>Administração</option>
-								<option>Almoxerifado</option>
-								<option>Docentes</option>
-							</select>
-						</div>
-					</td>
-					<td><!--TOTAL-->
-						<div class="input-group input-group-sm">
-							<div class="input-group-prepend">
-								<span class="input-group-text" id="inputGroup-sizing-sm">R$</span>
-							</div>
-							<input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
-								value="100,00" disabled>
-						</div>
-					</td>
-					<td><!--AÇÃO-->
-						<button class="btn btn-sm btn-light float-left" title="Excluir" disabled><img src="../img/lixeira.png" alt="Excluir"></button>
-						<button class="btn btn-sm btn-light float-left" title="Editar" disabled><img src="../img/Edit.png" alt="Editar"></button>
-					</td>
-				</tr>
-				<tr>
-					<td><!--QUANTIDADE-->
-						<div class="input-group input-group-sm">
-							<input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="25"
-								disabled>
-						</div>
-					</td>
-					<td><!--PRODUTO-->
-						<div class="input-group input-group-sm">
-							<select id="produto" class="form-control" disabled>
-								<option>Escolha...</option>
-								<option>Mouse</option>
-								<option selected>Teclado</option>
-								<option>Monitor</option>
-							</select>
-						</div>
-					</td>
-					<td><!--SETOR-->
-						<div class="input-group input-group-sm">
-							<select id="setor" class="form-control" disabled>
-								<option>Escolha...</option>
-								<option selected>Administração</option>
-								<option>Almoxerifado</option>
-								<option selected>Docentes</option>
-							</select>
-						</div>
-					</td>
-					<td><!--TOTAL-->
-						<div class="input-group input-group-sm">
-							<div class="input-group-prepend">
-								<span class="input-group-text" id="inputGroup-sizing-sm">R$</span>
-							</div>
-							<input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
-								value="180,00" disabled>
-						</div>
-					</td>
-					<td><!--AÇÃO-->
-						<button class="btn btn-sm btn-light float-left" title="Excluir" disabled><img src="../img/lixeira.png" alt="Excluir"></button>
-						<button class="btn btn-sm btn-light float-left" title="Editar" disabled><img src="../img/Edit.png" alt="Editar"></button>
-					</td>
-				</tr>
+				<?php
+				$sql = "
+					SELECT * FROM saida_produto WHERE saiCod = $idSaida
+					";
+				$result = $con->query($sql);
+
+				while ($row = mysqli_fetch_object($result)) {
+					?>
+					<tr>
+						<form action="cadastrar.php" method="POST">
+							<td class="col-sm-2"><!--QUANTIDADE-->
+								<div class="input-group input-group-sm">
+									<input type="number" class="form-control" value="<?php echo $row->saiQntProduto; ?>">
+								</div>
+							</td>
+							<td class="col-sm-4"><!--PRODUTO-->
+								<div class="input-group input-group-sm">
+									<select id="produto" class="form-control">
+										<?php
+										$sql = "SELECT * FROM produto ORDER BY proNome";
+										$result2 = $con->query($sql);
+										while ($row2 = mysqli_fetch_object($result2)) {
+											if ($row->proCod == $row2->proCod) {
+												echo "<option value='$row2->proCod' selected> $row2->proNome</option>";
+											} else {
+												echo "<option value='$row2->proCod'> $row2->proNome</option>";
+											}
+										}
+										?>
+									</select>
+								</div>
+							</td>
+							<td class="col-sm-4"><!--SETOR-->
+								<div class="input-group input-group-sm">
+									<select id="setor" class="form-control">
+										<?php
+										$sql = "SELECT * FROM setor ORDER BY setNome";
+										$result2 = $con->query($sql);
+										while ($row3 = mysqli_fetch_object($result2)) {
+											if ($row->setCod == $row3->setCod) {
+												echo "<option value='$row3->setCod' selected> $row3->setNome</option>";
+											} else {
+												echo "<option value='$row3->setCod'> $row3->setNome</option>";
+											}
+										}
+										?>
+									</select>
+								</div>
+							</td>
+							<td class="col-sm-2"><!--AÇÃO-->
+								<input type="hidden" name="op" value="form2" />
+								<input type="hidden" name="saiCod" value="<?php echo $idSaida; ?>" />
+								<input type="hidden" name="sai_proCod" value="<?php echo $row->sai_proCod; ?>" />
+
+								<button type="submit" name="acao" value="alterar" class="btn btn-info btn-sm">
+									<img src="../img/Edit.png" alt="Editar">
+								</button>
+								<button type="submit" name="acao" value="excluir" class="btn btn-danger btn-sm">
+									<img src="../img/lixeira.png" alt="Excluir"></a>
+								</button>
+							</td>
+						</form>
+					</tr>
+					<?php
+				}
+				?>
 			</tbody>
 		</table>
 		<div class=text-right>
