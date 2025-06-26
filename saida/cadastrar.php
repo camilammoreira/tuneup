@@ -3,6 +3,9 @@ require_once('../cod/bdconexao.php');
 
 $op = 'form1';
 
+date_default_timezone_set('America/Sao_Paulo');
+$dataHoje = date('Y-m-d');
+
 if (isset($_POST['op']) && $_POST['op'] == 'form1') {
 	require_once('../cod/bdconexao.php'); // gera o obj de conexão $con
 
@@ -141,9 +144,9 @@ if ($op === 'form1') {
 		</div>
 		<div class="form-group">
 			<label>Data</label>
-			<input type="date" name="data" class="form-control col-lg-3" id="data" required>
+			<input type="date" name="data" class="form-control col-lg-3" id="data" max="<?= $dataHoje ?>" required>
 		</div>
-		<div class="form-group">
+		<div class=" form-group">
 			<label for="nome">Descrição <small>(Opcional)</small></label>
 			<input type="text" name="descricao" class="form-control" id="descricao">
 		</div>

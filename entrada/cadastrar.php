@@ -9,6 +9,9 @@ require_once('../cod/bdconexao.php'); ?>
 
 $op = 'NF';
 
+date_default_timezone_set('America/Sao_Paulo');
+$dataHoje = date('Y-m-d');
+
 // OPÇÃO DE CADASTRO DE NOTA FISCAL!!!
 if (isset($_POST['op']) && $_POST['op'] == 'NF') {
 	$op = $_POST['op'];
@@ -24,7 +27,7 @@ if (isset($_POST['op']) && $_POST['op'] == 'NF') {
 	$erro = 0;
 	$msg = array();
 
-	// VALIDA NUMERO DE NOTA FISCAL
+	// VALIDAÇÃO NUMERO DE NOTA FISCAL
 	function validarNF($nf)
 	{
 		// Verifica se tem exatamente 44 dígitos numéricos
@@ -38,7 +41,6 @@ if (isset($_POST['op']) && $_POST['op'] == 'NF') {
 
 		return $dvInformado === $dvCalculado;
 	}
-
 	function calcularDV($chave43)
 	{
 		$pesos = [2, 3, 4, 5, 6, 7, 8, 9];
@@ -56,6 +58,12 @@ if (isset($_POST['op']) && $_POST['op'] == 'NF') {
 		$dv = 11 - $resto;
 		return ($dv >= 10) ? 0 : $dv;
 	}
+
+	if (!validarNF($nf)) {
+		$erro = 1;
+		array_push($msg, "Nota fiscal inválida");
+	}
+
 
 	mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
@@ -147,62 +155,6 @@ if (isset($_POST['op']) && $_POST['op'] == 'PR') {
 	}
 
 }
-// //ALTERA A LINHA
-// if (isset($_POST['alt-item'])){
-// 	// Recebe as variáveis do formulário
-// 	$produto = $_POST['produto'];
-// 	$qtd = $_POST['quantidade'];
-// 	$valor = $_POST['valor'];
-// 	$valor = str_replace(".","",$valor);
-// 	$valor = str_replace(",",".",$valor);
-// 	$idNOTA = $_POST['nf'];
-// 	// Verificação de erro
-// 	$erro = 0;
-// 	$msg = array();
-
-// 	$id = $_POST['id'];	
-
-// 	// Inserir no banco
-// 	$sql = "
-// 	UPDATE entrada_produto 
-// 	SET proCod='$produto', entCod='$idNOTA', entValorProduto= '$valor', entQntProduto='$qtd'
-// 	WHERE ent_proCod = $id
-// 	";
-
-// 	if ($con->query($sql) === TRUE)
-// 		header("Location: pesquisar.php");
-// 	else{
-// 		$erro = 1;
-// 		array_push($msg,"Operação não realizada!");
-// 	}
-
-// 	echo $con->error;
-// }
-// //EXCLUI A LINHA
-// if(isset($_POST['']) && isset($_GET['id']) ){
-// 	if ($_GET['op2'] == 'excluir'){
-// 		$erro = 0;
-// 		$msg = array();
-// 		// Criar a query
-// 		$id = $_GET['id'];
-// 		$sql = "DELETE FROM entrada_produto WHERE proCod = $id";
-// 		// Executar a query
-// 		if (mysqli_query($conexao, $sql)) {
-// 			// Redireciona de volta para a página da nota
-// 			$id_entrada = intval($_POST['entCod']);
-// 			header("Location: cadastrar.php?id=entCod");
-// 			exit();
-// 		// if ($con->query($sql) === TRUE)
-// 		// 	array_push($msg,"Produto excluído da nota fical");
-// 		} else {
-// 			$erro = 1;
-// 			array_push($msg,"Erro ao excluir produto: " . $e->getMessage());
-// 		}
-// 	}
-// }
-
-
-
 ?>
 
 <?php
@@ -247,7 +199,7 @@ if ($op != 'PR') {
 		</div>
 		<div class="form-group">
 			<label>Data</label>
-			<input type="date" name="data" class="form-control col-lg-5" id="data" required>
+			<input type="date" name="data" class="form-control col-lg-3" id="data" max="<?= $dataHoje ?>" required>
 		</div>
 		<div class="form-group">
 			<label>Fornecedor</label></br>
