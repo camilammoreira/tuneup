@@ -22,6 +22,7 @@ if (isset($_POST['op']) && $_POST['op'] == 'NF') {
 	$nf = $_POST['nf'];
 	$data = $_POST['data'];
 	$fornecedor = $_POST['fornecedor'];
+	$descricao = $_POST['descricao'];
 	$usuId = $_SESSION['usuId'];
 
 	$erro = 0;
@@ -70,8 +71,8 @@ if (isset($_POST['op']) && $_POST['op'] == 'NF') {
 	try {
 		if (!$erro) {
 			$sql = "
-			INSERT INTO entrada (entNF, entData, entFornecedor, usuId) 
-			VALUES ('$nf','$data','$fornecedor','$usuId')
+			INSERT INTO entrada (entNF, entData, entFornecedor, entDescricao, usuId) 
+			VALUES ('$nf','$data','$fornecedor', '$descricao','$usuId')
 			";
 
 			$con->query($sql); // Aqui pode lançar exceção se NF já existe
@@ -193,14 +194,17 @@ if ($op != 'PR') {
 		<!-- OPÇÃO DE CADASTRAR!!! -->
 		<input type="hidden" name="op" value="NF" />
 		<h4>Registrar Entrada</h4></br>
-		<div class="form-group">
-			<label for="nf">Nº da Nota Fiscal</label>
-			<input type="number" name="nf" class="form-control col-lg-5" id="nf" required>
+		<div class="form-row">
+			<div class="form-group col-lg-9">
+				<label for="nf">Nº da Nota Fiscal</label>
+				<input type="number" name="nf" class="form-control" id="nf" required>
+			</div>
+			<div class="form-group col-lg-3">
+				<label>Data</label>
+				<input type="date" name="data" class="form-control" id="data" max="<?= $dataHoje ?>" required>
+			</div>
 		</div>
-		<div class="form-group">
-			<label>Data</label>
-			<input type="date" name="data" class="form-control col-lg-3" id="data" max="<?= $dataHoje ?>" required>
-		</div>
+
 		<div class="form-group">
 			<label>Fornecedor</label></br>
 			<select name="fornecedor" class="escolha form-control col-lg-5" required>
@@ -212,6 +216,10 @@ if ($op != 'PR') {
 					echo "<option value='$row->forCod'> $row->forNome</option>";
 				?>
 			</select>
+		</div>
+		<div class=" form-group">
+			<label for="nome">Descrição <small>(Opcional)</small></label>
+			<input type="text" name="descricao" class="form-control" id="descricao">
 		</div>
 		<input type="submit" name="submit" value="Cadastrar" class="btn btn-info float-right mt-1" />
 	</form>
@@ -225,8 +233,10 @@ if ($op == 'PR') {
 	$result = $con->query($sql);
 	$row = mysqli_fetch_object($result);
 	$nf = $row->entNF;
+	$descricao = $row->entDescricao;
 	?>
 	<h4>Nota Fiscal nº <?php echo $nf ?></h4>
+	<p><?php echo $descricao ?></p>
 	<form action="cadastrar.php" method="post">
 		<div class="p-2 col-lg-6 mx-auto">
 			<!-- SALVA NO FORM A OPÇÃO DO PRODUTO!!! -->
