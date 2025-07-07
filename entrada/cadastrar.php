@@ -112,16 +112,19 @@ if (isset($_POST['op']) && $_POST['op'] == 'PR') {
 		}
 
 	} elseif ($acao === 'alterar') {
+		$ent_proCod = $_POST['ent_proCod'];
 		$produto = mysqli_real_escape_string($con, $_POST['produto']);
 		$quantidade = intval($_POST['quantidade']);
-		$valor = intval($con, $_POST['valor']);
+		$valor = intval($_POST['valor']);
+		$valor = str_replace(".", "", $valor);
+		$valor = str_replace(",", ".", $valor);
 
 		$sql = "UPDATE entrada_produto 
-				SET nome_produto = '$produto', quantidade = $quantidade, valor = $valor
-				WHERE id = $ent_proCod";
+				SET proCod = '$produto', entQntProduto = $quantidade, entValorProduto = $valor
+				WHERE ent_proCod = $ent_proCod";
 
 		if (mysqli_query($con, $sql)) {
-			header("Location: cadastrar.php?id=$entCod");
+			//header("Location: cadastrar.php?id=$entCod");
 		} else {
 			echo "Erro ao atualizar: " . mysqli_error($con);
 		}
