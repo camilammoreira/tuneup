@@ -54,29 +54,77 @@ if (isset($_POST['op']) && $_POST['op'] == 'form2') {
 	if ($acao === 'excluir') {
 		$sai_proCod = $_POST['sai_proCod'];
 		$saiCod = intval($_POST['saiCod']);
+
+		// Recupera os dados da saída para repor o estoque
+		$sqlInfo = "SELECT proCod, saiQntProduto FROM saida_produto WHERE sai_proCod = $sai_proCod";
+		$result = $con->query($sqlInfo);
+		$info = $result->fetch_assoc();
+		$proCod = $info['proCod'];
+		$saiQnt = $info['saiQntProduto'];
+
+		// Executa DELETE
 		$sql = "DELETE FROM saida_produto WHERE sai_proCod = $sai_proCod";
 		if (mysqli_query($con, $sql)) {
-			// array_push($msg, "Produto excluído");
+			// Repor estoque
+			$sqlUpdate = "UPDATE produto SET proQnt = proQnt + $saiQnt WHERE proCod = $proCod";
+			$con->query($sqlUpdate);
 		} else {
 			echo "Erro ao excluir: " . mysqli_error($con);
 		}
 
 	} elseif ($acao === 'alterar') {
+		$msg = array();
+		$erro = 0;
+
 		$sai_proCod = $_POST['sai_proCod'];
-		$produto = mysqli_real_escape_string($con, $_POST['proCod']);
-		$quantidade = intval($_POST['saiQntProduto']);
+		$novoProduto = intval($_POST['proCod']);
+		$novaQuantidade = intval($_POST['saiQntProduto']);
 		$setor = intval($_POST['setCod']);
 
-		$sql = "UPDATE saida_produto 
-				SET proCod = '$produto', saiQntProduto = $quantidade, setCod = $setor
-				WHERE sai_proCod = $sai_proCod";
+		// 1. Buscar os dados antigos da saída
+		$sqlAnterior = "SELECT proCod, saiQntProduto FROM saida_produto WHERE sai_proCod = $sai_proCod";
+		$resultAnterior = $con->query($sqlAnterior);
+		$anterior = $resultAnterior->fetch_assoc();
+		$produtoAnterior = intval($anterior['proCod']);
+		$qtdAnterior = intval($anterior['saiQntProduto']);
 
-		if (mysqli_query($con, $sql)) {
-			// header("Location: cadastrar.php?id=$saiCod");
+		// 2. Repor estoque do produto anterior
+		$sqlRepor = "UPDATE produto SET proQnt = proQnt + $qtdAnterior WHERE proCod = $produtoAnterior";
+		$con->query($sqlRepor);
+
+		// 3. Verificar estoque do novo produto
+		$sqlEstoque = "SELECT proQnt FROM produto WHERE proCod = $novoProduto";
+		$resultEstoque = $con->query($sqlEstoque);
+		$estoque = $resultEstoque->fetch_assoc();
+		$estoqueAtual = intval($estoque['proQnt']);
+
+		if ($estoqueAtual < $novaQuantidade) {
+			$erro = 1;
+			array_push($msg, "Erro: Estoque insuficiente para o novo produto. Apenas $estoqueAtual unidades disponíveis.");
+
+			// Volta o que repôs antes (para manter integridade)
+			$sqlDesfazerReposicao = "UPDATE produto SET proQnt = proQnt - $qtdAnterior WHERE proCod = $produtoAnterior";
+			$con->query($sqlDesfazerReposicao);
+
 		} else {
-			echo "Erro ao atualizar: " . mysqli_error($con);
-		}
+			// 4. Atualizar o registro
+			$sqlUpdate = "UPDATE saida_produto 
+						  SET proCod = $novoProduto, saiQntProduto = $novaQuantidade, setCod = $setor
+						  WHERE sai_proCod = $sai_proCod";
 
+			if ($con->query($sqlUpdate)) {
+				// 5. Subtrair nova quantidade do estoque do novo produto
+				$sqlDescontar = "UPDATE produto SET proQnt = proQnt - $novaQuantidade WHERE proCod = $novoProduto";
+				$con->query($sqlDescontar);
+				array_push($msg, "Produto alterado com sucesso.");
+			} else {
+				array_push($msg, "Erro ao atualizar produto: " . $con->error);
+
+				// Volta o estoque original do produto anterior caso falhe
+				$sqlReverterReposicao = "UPDATE produto SET proQnt = proQnt - $qtdAnterior WHERE proCod = $produtoAnterior";
+				$con->query($sqlReverterReposicao);
+			}
+		}
 	} else {
 
 		// Recebe as variáveis do formulário
@@ -86,6 +134,18 @@ if (isset($_POST['op']) && $_POST['op'] == 'form2') {
 
 		$erro = 0;
 		$msg = array();
+
+		// Verificar se há estoque suficiente
+		$sqlEstoque = "SELECT proQnt FROM produto WHERE proCod = $produto";
+		$resultEstoque = $con->query($sqlEstoque);
+		$rowEstoque = $resultEstoque->fetch_assoc();
+		$estoqueAtual = intval($rowEstoque['proQnt']);
+
+		if ($estoqueAtual < $qtd) {
+			$erro = 1;
+			array_push($msg, "Erro: Estoque insuficiente. Apenas $estoqueAtual unidades disponíveis.");
+		}
+
 
 		// Se não houver erro manda pro banco
 		if (!$erro) {
@@ -97,6 +157,10 @@ if (isset($_POST['op']) && $_POST['op'] == 'form2') {
 
 			if ($con->query($sql) === TRUE) {
 				array_push($msg, "Produto cadastrado com sucesso");
+
+				$sqlUpdate = "UPDATE produto SET proQnt = proQnt - $qtd WHERE proCod = $produto";
+				$con->query($sqlUpdate);
+
 			} else {
 				$erro = 1;
 				array_push($msg, "Operação não realizada");
